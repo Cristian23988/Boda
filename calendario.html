@@ -1,104 +1,99 @@
-<!-- Contador estilo clásico (bodas) -->
-<div id="wedding-countdown">
-  <style>
-    #wedding-countdown *{box-sizing:border-box}
-    #wedding-countdown {
-      display: flex;
-      justify-content: center; /* centra horizontalmente */
-      align-items: flex-start; /* evita que se centre verticalmente */
-      padding: 10px; /* borde mínimo alrededor */
-    }
-    .count-card{
-      background: #fff;
-      border: 2px solid #d4af37; /* dorado */
-      border-radius: 14px;
-      padding: 14px;
-      text-align: center;
-      font-family: 'Georgia', serif;
-      color: #2b2b2b;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      width: 240px; /* más pequeño */
-    }
-    .title{
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #b38b00;
-      letter-spacing: 0.5px;
-    }
-    .time-box{
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 6px;
-    }
-    .unit{
-      background: #fdf6e3;
-      border-radius: 8px;
-      padding: 8px;
-      min-width: 50px;
-      box-shadow: inset 0 0 3px rgba(0,0,0,0.08);
-    }
-    .number{
-      font-size: 18px;
-      font-weight: bold;
-      color: #333;
-    }
-    .label{
-      font-size: 10px;
-      font-style: italic;
-      color: #666;
-    }
-    .heart{
-      font-size: 14px;
-      color: #d43f3f;
-      margin-left: 4px;
-    }
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden; /* evita scroll interno */
-    }
-  </style>
-
-  <div class="count-card">
-    <div class="title">Cuenta regresiva para la boda <span class="heart">❤</span></div>
-    <div class="time-box">
-      <div class="unit"><div class="number" id="days">--</div><div class="label">Días</div></div>
-      <div class="unit"><div class="number" id="hours">--</div><div class="label">Horas</div></div>
-      <div class="unit"><div class="number" id="minutes">--</div><div class="label">Minutos</div></div>
-      <div class="unit"><div class="number" id="seconds">--</div><div class="label">Segundos</div></div>
-    </div>
+<div class="calendar">
+  <div class="month-year" id="monthYear"></div>
+  <div class="weekdays">
+    <div>L</div><div>M</div><div>X</div><div>J</div><div>V</div><div>S</div><div>D</div>
   </div>
-
-  <script>
-    (function(){
-      const mes = 12;
-      const dia = 10;
-      const ano = 2025;
-      const target = new Date(Date.UTC(ano, mes-1, dia, 0, 0, 0));
-
-      function updateCountdown(){
-        const now = new Date();
-        const diffMs = target.getTime() - now.getTime();
-
-        if(diffMs > 0){
-          const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-
-          document.getElementById('days').textContent = days;
-          document.getElementById('hours').textContent = hours;
-          document.getElementById('minutes').textContent = minutes;
-          document.getElementById('seconds').textContent = seconds;
-        } else {
-          document.querySelector('.count-card').innerHTML = "<div class='title'>¡El gran día ha llegado! <span class='heart'>❤</span></div>";
-        }
-      }
-
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-    })();
-  </script>
+  <div class="days" id="days"></div>
 </div>
+
+<style>
+  .calendar {
+    background: rgba(18,18,18,0.9); /* negro con un tris de transparencia */
+    color: #fff;
+    border-radius: 10px;
+    padding: 12px;
+    width: 220px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  }
+  .month-year {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #1db954;
+  }
+  .weekdays, .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    font-size: 13px;
+    text-align: center;
+  }
+  .weekdays div {
+    font-weight: bold;
+    color: #b3b3b3;
+  }
+  .day {
+    padding: 6px;
+    border-radius: 50%; /* círculo */
+    background: rgba(255,255,255,0.05);
+  }
+  .empty {
+    padding: 6px;
+  }
+  .highlight {
+    background: #1db954;
+    color: #121212;
+    font-weight: bold;
+    position: relative;
+  }
+  /* Opcional: corazón encima del día */
+  .highlight::after {
+    content: "❤";
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 12px;
+    color: #e63946;
+  }
+</style>
+
+<script>
+  // Constantes editables
+  const dia = 9;      // Día marcado
+  const mes = 12;     // Mes (1-12)
+  const año = 2025;   // Año
+
+  const monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  const monthYear = document.getElementById("monthYear");
+  const daysContainer = document.getElementById("days");
+
+  // Mostrar mes y año
+  monthYear.textContent = `${monthNames[mes-1]} ${año}`;
+
+  // Calcular días del mes
+  const firstDay = new Date(año, mes-1, 1).getDay(); // día de la semana del 1 (0=Domingo)
+  const totalDays = new Date(año, mes, 0).getDate(); // total de días del mes
+
+  // Ajustar inicio para que Lunes sea la primera columna
+  const offset = (firstDay === 0 ? 6 : firstDay - 1);
+
+  // Rellenar espacios iniciales
+  for(let i=0; i<offset; i++){
+    const empty = document.createElement("div");
+    empty.classList.add("empty");
+    daysContainer.appendChild(empty);
+  }
+
+  // Crear días
+  for(let d=1; d<=totalDays; d++){
+    const dayElem = document.createElement("div");
+    dayElem.textContent = d;
+    dayElem.classList.add("day");
+    if(d === dia){
+      dayElem.classList.add("highlight");
+    }
+    daysContainer.appendChild(dayElem);
+  }
+</script>
