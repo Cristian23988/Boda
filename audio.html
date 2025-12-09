@@ -1,72 +1,94 @@
-<div class="music-player">
-  <audio id="audio" src="https://docs.google.com/uc?export=download&id=139l6Uapl_Ke7eEXfsgkMf6W3x-houCnu"></audio>
-  
+<div class="spotify-player">
+  <audio id="audio" src="https://snazzy-scone-b277c5.netlify.app/Instrumental_Mix.mp3" preload="metadata"></audio>
   <div class="controls">
-    <button id="playPause" class="btn">▶️</button>
-    <button id="stop" class="btn">⏹️</button>
-    <div class="track-info">🎵 Invitación especial</div>
+    <button id="playPause" class="btn">▶</button>
+    <input type="range" id="progress" value="0" min="0" max="100">
+    <span id="time">0:00</span>
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.8" class="vol">
   </div>
 </div>
 
 <style>
-  .music-player {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(30,20,15,0.6);
-    border: 2px solid #d4af37;
-    border-radius: 16px;
-    padding: 12px 20px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
-    font-family: 'Georgia', serif;
-    color: #f2e6c9;
-    max-width: 320px;
-    margin: auto;
+  .spotify-player {
+    background: rgba(18,18,18,0.85); /* negro con transparencia */
+    color:#fff;
+    border-radius:12px;
+    padding:10px; /* menos padding */
+    display:inline-block; /* se ajusta al contenido */
+    font:600 14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    box-shadow:0 6px 16px rgba(0,0,0,0.4);
   }
   .controls {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    display:flex;
+    align-items:center;
+    gap:8px; /* menos espacio entre elementos */
   }
   .btn {
-    background: linear-gradient(135deg,#f9e4b7,#d9a14a);
-    border: none;
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    font-size: 20px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: transform 0.2s ease;
+    background:#1db954;
+    border:none;
+    border-radius:50%;
+    width:40px;
+    height:40px;
+    color:#121212;
+    font-weight:900;
+    cursor:pointer;
+    font-size:18px;
   }
-  .btn:hover {
-    transform: scale(1.1);
+  .btn:hover { transform:scale(1.1); }
+  #progress {
+    flex:1;
+    accent-color:#1db954;
   }
-  .track-info {
-    font-size: 14px;
-    font-style: italic;
-    color: #fff;
+  #time {
+    width:44px;
+    text-align:right;
+    color:#b3b3b3;
+    font-size:12px;
+  }
+  .vol {
+    width:80px;
+    accent-color:#1db954;
+  }
+  html, body {
+    margin:0;
+    padding:0;
+    overflow:hidden; /* evita scroll extra en iframe */
   }
 </style>
 
 <script>
-  const audio = document.getElementById('audio');
-  const playPauseBtn = document.getElementById('playPause');
-  const stopBtn = document.getElementById('stop');
+  const audio=document.getElementById('audio');
+  const playPauseBtn=document.getElementById('playPause');
+  const progress=document.getElementById('progress');
+  const time=document.getElementById('time');
+  const volume=document.getElementById('volume');
 
-  playPauseBtn.addEventListener('click', () => {
+  playPauseBtn.addEventListener('click',async()=>{
     if(audio.paused){
-      audio.play();
-      playPauseBtn.textContent = "⏸️";
-    } else {
+      await audio.play();
+      playPauseBtn.textContent="⏸";
+    }else{
       audio.pause();
-      playPauseBtn.textContent = "▶️";
+      playPauseBtn.textContent="▶";
     }
   });
 
-  stopBtn.addEventListener('click', () => {
-    audio.pause();
-    audio.currentTime = 0;
-    playPauseBtn.textContent = "▶️";
+  audio.addEventListener('timeupdate',()=>{
+    if(audio.duration){
+      progress.value=(audio.currentTime/audio.duration)*100;
+      const m=Math.floor(audio.currentTime/60);
+      const s=Math.floor(audio.currentTime%60).toString().padStart(2,'0');
+      time.textContent=`${m}:${s}`;
+    }
+  });
+
+  progress.addEventListener('input',()=>{
+    if(audio.duration){
+      audio.currentTime=(progress.value/100)*audio.duration;
+    }
+  });
+
+  volume.addEventListener('input',()=>{
+    audio.volume=volume.value;
   });
 </script>
