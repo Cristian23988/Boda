@@ -1,0 +1,72 @@
+<div class="music-player">
+  <audio id="audio" src="https://docs.google.com/uc?export=download&id=139l6Uapl_Ke7eEXfsgkMf6W3x-houCnu"></audio>
+  
+  <div class="controls">
+    <button id="playPause" class="btn">▶️</button>
+    <button id="stop" class="btn">⏹️</button>
+    <div class="track-info">🎵 Invitación especial</div>
+  </div>
+</div>
+
+<style>
+  .music-player {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(30,20,15,0.6);
+    border: 2px solid #d4af37;
+    border-radius: 16px;
+    padding: 12px 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    font-family: 'Georgia', serif;
+    color: #f2e6c9;
+    max-width: 320px;
+    margin: auto;
+  }
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .btn {
+    background: linear-gradient(135deg,#f9e4b7,#d9a14a);
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease;
+  }
+  .btn:hover {
+    transform: scale(1.1);
+  }
+  .track-info {
+    font-size: 14px;
+    font-style: italic;
+    color: #fff;
+  }
+</style>
+
+<script>
+  const audio = document.getElementById('audio');
+  const playPauseBtn = document.getElementById('playPause');
+  const stopBtn = document.getElementById('stop');
+
+  playPauseBtn.addEventListener('click', () => {
+    if(audio.paused){
+      audio.play();
+      playPauseBtn.textContent = "⏸️";
+    } else {
+      audio.pause();
+      playPauseBtn.textContent = "▶️";
+    }
+  });
+
+  stopBtn.addEventListener('click', () => {
+    audio.pause();
+    audio.currentTime = 0;
+    playPauseBtn.textContent = "▶️";
+  });
+</script>
