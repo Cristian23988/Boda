@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Boda - Cuenta regresiva</title>
+
+<!-- Tipografía elegante -->
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --bg: #f8f8f8;
+        --text-main: #1a1a1a;
+        --text-soft: #555;
+        --accent: #b8a67a; /* oro suave */
+    }
+
+    body {
+        margin: 0;
+        background: var(--bg);
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 30px;
+        color: var(--text-main);
+    }
+
+    .container {
+        max-width: 900px;
+        width: 100%;
+        background: white;
+        border: 1px solid #ddd;
+        padding: 60px 40px;
+        text-align: center;
+        border-radius: 14px;
+    }
+
+    .title {
+        font-family: 'Marcellus', serif;
+        font-size: 36px;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
+        color: var(--text-main);
+    }
+
+    .subtitle {
+        font-size: 15px;
+        color: var(--text-soft);
+        margin-bottom: 40px;
+        letter-spacing: 0.4px;
+    }
+
+    .countdown {
+        display: flex;
+        justify-content: center;
+        gap: 32px;
+        flex-wrap: wrap;
+    }
+
+    .unit {
+        text-align: center;
+    }
+
+    .number {
+        font-size: 48px;
+        font-family: 'Marcellus', serif;
+        color: var(--accent);
+        line-height: 1;
+    }
+
+    .label {
+        font-size: 13px;
+        text-transform: uppercase;
+        margin-top: 6px;
+        letter-spacing: 2px;
+        color: var(--text-soft);
+    }
+
+    /* Línea decorativa */
+    .divider {
+        width: 80px;
+        height: 1px;
+        background: var(--accent);
+        margin: 40px auto;
+    }
+
+    @media (max-width: 600px) {
+        .number {
+            font-size: 36px;
+        }
+        .title {
+            font-size: 28px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="title">Nuestra Boda</div>
+    <div class="subtitle">La cuenta regresiva para el gran día</div>
+
+    <div class="countdown">
+        <div class="unit">
+            <div class="number" id="days">0</div>
+            <div class="label">Días</div>
+        </div>
+        <div class="unit">
+            <div class="number" id="hours">0</div>
+            <div class="label">Horas</div>
+        </div>
+        <div class="unit">
+            <div class="number" id="minutes">0</div>
+            <div class="label">Minutos</div>
+        </div>
+        <div class="unit">
+            <div class="number" id="seconds">0</div>
+            <div class="label">Segundos</div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="subtitle" id="eventMsg" style="display:none;">¡El gran día ha llegado!</div>
+</div>
+
+<script>
+    // Cambia aquí la fecha:
+    const targetDate = new Date("2026-05-08T16:00:00");
+
+    const d = id => document.getElementById(id);
+
+    function updateCountdown() {
+        const now = new Date();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+            d("eventMsg").style.display = "block";
+            d("days").textContent = "0";
+            d("hours").textContent = "0";
+            d("minutes").textContent = "0";
+            d("seconds").textContent = "0";
+            clearInterval(interval);
+            return;
+        }
+
+        const s = Math.floor(diff / 1000);
+        const days = Math.floor(s / 86400);
+        const hours = Math.floor((s % 86400) / 3600);
+        const minutes = Math.floor((s % 3600) / 60);
+        const seconds = s % 60;
+
+        d("days").textContent = days;
+        d("hours").textContent = hours.toString().padStart(2, '0');
+        d("minutes").textContent = minutes.toString().padStart(2, '0');
+        d("seconds").textContent = seconds.toString().padStart(2, '0');
+    }
+
+    const interval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+</script>
+
+</body>
+</html>
