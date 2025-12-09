@@ -1,96 +1,25 @@
-<div class="spotify-player">
-  <audio id="audio" src="https://silver-dango-750990.netlify.app/Instrumental_Mix.mp3" preload="metadata"></audio>
-  <div class="controls">
-    <button id="playPause" class="btn">▶</button>
-    <input type="range" id="progress" value="0" min="0" max="100">
-    <span id="time">0:00</span>
-    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.8" class="vol">
-  </div>
+<div class="spotify-player" style="display:none;">
+  <audio id="audio" src="https://silver-dango-750990.netlify.app/Instrumental_Mix.mp3" autoplay muted preload="metadata"></audio>
 </div>
 
-<style>
-  .spotify-player {
-    background: linear-gradient(to right, rgba(18,18,18,0) 0%, rgba(18,18,18,0.85) 20%, rgba(18,18,18,0.85) 80%, rgba(18,18,18,0) 100%);
-    color:#fff;
-    padding:8px; /* más compacto */
-    display:inline-block;
-    font:600 12px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Arial;
-    box-shadow:0 4px 12px rgba(0,0,0,0.3);
-  }
-  .controls {
-    display:flex;
-    align-items:center;
-    gap:6px; /* menos espacio */
-  }
-  .btn {
-    background:#1db954;
-    border:none;
-    border-radius:50%;
-    width:34px;
-    height:34px;
-    color:#121212;
-    font-weight:900;
-    cursor:pointer;
-    font-size:16px;
-  }
-  .btn:hover { transform:scale(1.1); }
-  #progress {
-    flex:1;
-    accent-color:#1db954;
-    height:4px;
-  }
-  #time {
-    width:40px;
-    text-align:right;
-    color:#b3b3b3;
-    font-size:11px;
-  }
-  .vol {
-    width:70px;
-    accent-color:#1db954;
-    height:4px;
-  }
-  html, body {
-    margin:0;
-    padding:0;
-    overflow:hidden; /* evita scroll extra en iframe */
-  }
-</style>
-
 <script>
-  const audio=document.getElementById('audio');
-  const playPauseBtn=document.getElementById('playPause');
-  const progress=document.getElementById('progress');
-  const time=document.getElementById('time');
-  const volume=document.getElementById('volume');
+  const audio = document.getElementById('audio');
 
-  playPauseBtn.addEventListener('click',async()=>{
-    if(audio.paused){
-      await audio.play();
-      playPauseBtn.textContent="⏸";
-    }else{
-      audio.pause();
-      playPauseBtn.textContent="▶";
-    }
+  // Al cargar la página, intenta reproducir en silencio
+  document.addEventListener("DOMContentLoaded", () => {
+    audio.play().catch(err => {
+      console.log("Autoplay bloqueado:", err);
+    });
   });
 
-  audio.addEventListener('timeupdate',()=>{
-    if(audio.duration){
-      progress.value=(audio.currentTime/audio.duration)*100;
-      const m=Math.floor(audio.currentTime/60);
-      const s=Math.floor(audio.currentTime%60).toString().padStart(2,'0');
-      time.textContent=`${m}:${s}`;
-    }
-  });
+  // En la primera interacción del usuario, activar sonido
+  function activarSonido() {
+    audio.muted = false;
+    audio.play();
+    document.removeEventListener("click", activarSonido);
+    document.removeEventListener("touchstart", activarSonido);
+  }
 
-  progress.addEventListener('input',()=>{
-    if(audio.duration){
-      audio.currentTime=(progress.value/100)*audio.duration;
-    }
-  });
-
-  volume.addEventListener('input',()=>{
-    audio.volume=volume.value;
-  });
+  document.addEventListener("click", activarSonido);
+  document.addEventListener("touchstart", activarSonido);
 </script>
-
