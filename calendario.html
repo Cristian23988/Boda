@@ -1,7 +1,10 @@
 <!-- Contador estilo clásico (bodas) -->
-<div id="wedding-countdown" style="max-width:300px;margin:auto;">
+<div id="wedding-countdown">
   <style>
     #wedding-countdown *{box-sizing:border-box}
+    #wedding-countdown {
+      display: inline-block; /* se ajusta al tamaño del contenido */
+    }
     .count-card{
       background: #fff;
       border: 2px solid #d4af37; /* dorado */
@@ -11,6 +14,7 @@
       font-family: 'Georgia', serif;
       color: #2b2b2b;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: inline-block;
     }
     .title{
       font-size: 18px;
@@ -47,10 +51,16 @@
       color: #d43f3f;
       margin-left: 6px;
     }
+    /* Quitamos altura forzada y scroll */
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
   </style>
 
   <div class="count-card">
-    <div class="title">Fal regresiva para la boda <span class="heart">❤</span></div>
+    <div class="title">Cuenta regresiva para la boda <span class="heart">❤</span></div>
     <div class="time-box">
       <div class="unit"><div class="number" id="days">--</div><div class="label">Días</div></div>
       <div class="unit"><div class="number" id="hours">--</div><div class="label">Horas</div></div>
@@ -61,10 +71,9 @@
 
   <script>
     (function(){
-      // Fecha objetivo (ejemplo: 1 junio 2026)
-	  const mes = 06;
-	  const dia = 01;
-	  const ano = 2026;
+      const mes = 12;
+      const dia = 10;
+      const ano = 2025;
       const target = new Date(Date.UTC(ano, mes-1, dia, 0, 0, 0));
 
       function updateCountdown(){
