@@ -6,14 +6,13 @@
 <style>
   body {
     margin:0;
-	
     background:transparent; /* fondo transparente */
     font-family:system-ui,Segoe UI,Roboto,Arial;
     text-align:center; /* centra horizontalmente */
   }
   .envelope {
     position:relative;
-	top:22px;
+    top:22px;
     width:100px;   /* pequeño para iframe */
     height:60px;
     background:#a5d6a7;
@@ -21,8 +20,8 @@
     cursor:pointer;
     box-shadow:0 4px 10px rgba(0,0,0,0.25);
     transition:transform 0.3s ease;
-    display:inline-block; /* ocupa solo su espacio */
-    margin-top:10px; /* pequeño margen arriba */
+    display:inline-block;
+    margin-top:10px;
   }
   .envelope:hover {
     transform:scale(1.05);
@@ -57,9 +56,9 @@
   }
   .arrows {
     margin-top:5px;
-    font-size:18px; /* flechas pequeñas */
+    font-size:18px;
     color:#2e7d32;
-    display:none; /* ocultas al inicio */
+    display:none;
     animation: bounce 1.5s infinite;
     text-shadow:0 0 4px rgba(0,0,0,0.3);
   }
@@ -91,10 +90,17 @@
   });
 
   envelope.addEventListener("click", () => {
+    // Evitar múltiples clics
+    envelope.style.pointerEvents = "none";
+
     audio.muted = false;
     audio.play();
-    // Mostrar flechas después de iniciar la música
     arrows.style.display = "block";
+
+    // Cuando termine la canción, vuelve a habilitar el clic
+    audio.addEventListener("ended", () => {
+      envelope.style.pointerEvents = "auto";
+    }, { once:true });
   });
 </script>
 
