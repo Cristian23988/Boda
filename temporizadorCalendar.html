@@ -1,0 +1,99 @@
+<!-- Contador estilo clásico (bodas) -->
+<div id="wedding-countdown" style="max-width:300px;margin:auto;">
+  <style>
+    #wedding-countdown *{box-sizing:border-box}
+    .count-card{
+      background: #fff;
+      border: 2px solid #d4af37; /* dorado */
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      font-family: 'Georgia', serif;
+      color: #2b2b2b;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .title{
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: #b38b00;
+      letter-spacing: 1px;
+    }
+    .time-box{
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .unit{
+      background: #fdf6e3;
+      border-radius: 10px;
+      padding: 10px;
+      min-width: 60px;
+      box-shadow: inset 0 0 4px rgba(0,0,0,0.08);
+    }
+    .number{
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+    .label{
+      font-size: 11px;
+      font-style: italic;
+      color: #666;
+    }
+    .heart{
+      font-size: 16px;
+      color: #d43f3f;
+      margin-left: 6px;
+    }
+	html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* evita scroll interno */
+  }
+  </style>
+
+  <div class="count-card">
+    <div class="title">Fal regresiva para la boda <span class="heart">❤</span></div>
+    <div class="time-box">
+      <div class="unit"><div class="number" id="days">--</div><div class="label">Días</div></div>
+      <div class="unit"><div class="number" id="hours">--</div><div class="label">Horas</div></div>
+      <div class="unit"><div class="number" id="minutes">--</div><div class="label">Minutos</div></div>
+      <div class="unit"><div class="number" id="seconds">--</div><div class="label">Segundos</div></div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      // Fecha objetivo (ejemplo: 1 junio 2026)
+	  const mes = 12;
+	  const dia = 10;
+	  const ano = 2025;
+      const target = new Date(Date.UTC(ano, mes-1, dia, 0, 0, 0));
+
+      function updateCountdown(){
+        const now = new Date();
+        const diffMs = target.getTime() - now.getTime();
+
+        if(diffMs > 0){
+          const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+          document.getElementById('days').textContent = days;
+          document.getElementById('hours').textContent = hours;
+          document.getElementById('minutes').textContent = minutes;
+          document.getElementById('seconds').textContent = seconds;
+        } else {
+          document.querySelector('.count-card').innerHTML = "<div class='title'>¡El gran día ha llegado! <span class='heart'>❤</span></div>";
+        }
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+  </script>
+</div>
