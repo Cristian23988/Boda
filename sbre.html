@@ -6,17 +6,14 @@
 <style>
   body {
     margin:0;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
+	
     background:transparent; /* fondo transparente */
     font-family:system-ui,Segoe UI,Roboto,Arial;
+    text-align:center; /* centra horizontalmente */
   }
   .envelope {
     position:relative;
-    	top:22px;
+	top:22px;
     width:100px;   /* pequeño para iframe */
     height:60px;
     background:#a5d6a7;
@@ -24,6 +21,8 @@
     cursor:pointer;
     box-shadow:0 4px 10px rgba(0,0,0,0.25);
     transition:transform 0.3s ease;
+    display:inline-block; /* ocupa solo su espacio */
+    margin-top:10px; /* pequeño margen arriba */
   }
   .envelope:hover {
     transform:scale(1.05);
@@ -57,7 +56,7 @@
     100% { transform:translate(-50%,-50%) scale(1); opacity:1; }
   }
   .arrows {
-    margin-top:8px;
+    margin-top:5px;
     font-size:18px; /* flechas pequeñas */
     color:#2e7d32;
     display:none; /* ocultas al inicio */
@@ -101,5 +100,3 @@
 
 </body>
 </html>
-
-
