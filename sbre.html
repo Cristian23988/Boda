@@ -8,56 +8,68 @@
     margin:0;
     background:transparent; /* fondo transparente */
     font-family:system-ui,Segoe UI,Roboto,Arial;
-    text-align:center; /* centra horizontalmente */
+    text-align:center;
   }
-  .envelope {
+
+  /* Botón de reproducción */
+  .play-button {
     position:relative;
     top:22px;
-    width:100px;   /* pequeño para iframe */
-    height:60px;
-    background:#a5d6a7;
-    border-radius:4px;
+    width:80px;
+    height:80px;
+    background:#b85c38; /* terracota */
+    border-radius:50%;
     cursor:pointer;
     box-shadow:0 4px 10px rgba(0,0,0,0.25);
     transition:transform 0.3s ease;
-    display:inline-block;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
     margin-top:10px;
   }
-  .envelope:hover {
+  .play-button:hover {
     transform:scale(1.05);
   }
-  .envelope::before {
-    content:"";
-    position:absolute;
-    top:-30px;
-    left:0;
-    width:0;
-    height:0;
-    border-left:50px solid transparent;
-    border-right:50px solid transparent;
-    border-bottom:30px solid #81c784;
+
+  /* Flecha de reproducción */
+  .play-button::before {
+    content:"▶";
+    font-size:32px;
+    color:#fff;
+    position:relative;
+    z-index:2;
   }
-  .dot {
+
+  /* Ondas musicales */
+  .wave {
     position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    width:12px;
-    height:12px;
-    background:#2e7d32;
+    border:2px solid rgba(184,92,56,0.6); /* terracota translúcido */
     border-radius:50%;
-    box-shadow:0 0 4px rgba(0,0,0,0.3);
-    animation:pulse 2s infinite;
+    animation: ripple 2s infinite;
+    z-index:1;
   }
-  @keyframes pulse {
-    0% { transform:translate(-50%,-50%) scale(1); opacity:1; }
-    50% { transform:translate(-50%,-50%) scale(1.2); opacity:0.7; }
-    100% { transform:translate(-50%,-50%) scale(1); opacity:1; }
+  .wave:nth-child(2) {
+    width:100px; height:100px;
+    animation-delay:0.3s;
   }
+  .wave:nth-child(3) {
+    width:120px; height:120px;
+    animation-delay:0.6s;
+  }
+  .wave:nth-child(4) {
+    width:140px; height:140px;
+    animation-delay:0.9s;
+  }
+
+  @keyframes ripple {
+    0% { transform:scale(0.8); opacity:1; }
+    100% { transform:scale(1.4); opacity:0; }
+  }
+
   .arrows {
     margin-top:5px;
     font-size:18px;
-    color:#2e7d32;
+    color:#b85c38;
     display:none;
     animation: bounce 1.5s infinite;
     text-shadow:0 0 4px rgba(0,0,0,0.3);
@@ -70,8 +82,11 @@
 </head>
 <body>
 
-<div class="envelope" id="envelope">
-  <div class="dot"></div>
+<div class="play-button" id="playButton">
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
 </div>
 <div class="arrows" id="arrows">⬇︎ ⬇︎ ⬇︎</div>
 
@@ -82,24 +97,22 @@
 
 <script>
   const audio = document.getElementById('audio');
-  const envelope = document.getElementById('envelope');
+  const playButton = document.getElementById('playButton');
   const arrows = document.getElementById('arrows');
 
   document.addEventListener("DOMContentLoaded", () => {
     audio.play().catch(err => console.log("Autoplay bloqueado:", err));
   });
 
-  envelope.addEventListener("click", () => {
-    // Evitar múltiples clics
-    envelope.style.pointerEvents = "none";
+  playButton.addEventListener("click", () => {
+    playButton.style.pointerEvents = "none";
 
     audio.muted = false;
     audio.play();
     arrows.style.display = "block";
 
-    // Cuando termine la canción, vuelve a habilitar el clic
     audio.addEventListener("ended", () => {
-      envelope.style.pointerEvents = "auto";
+      playButton.style.pointerEvents = "auto";
     }, { once:true });
   });
 </script>
