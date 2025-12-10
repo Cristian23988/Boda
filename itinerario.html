@@ -6,17 +6,15 @@
 
 <style>
     body {
-        background: #f3f1ea;
+        margin: 0;
+        padding: 0;
         font-family: "Georgia", serif;
-        display: flex;
-        justify-content: center;
-        padding: 20px;
+        background: transparent;
     }
 
-    /* 👉 REDUCCIÓN EXACTA SIN DAÑAR DISEÑO */
     .scale-wrapper {
-        transform: scale(0.70);   /* <= AJUSTA ESTE VALOR */
-        transform-origin: top center;
+        transform: scale(0.70);
+        transform-origin: top left;
     }
 
     .card {
@@ -32,12 +30,6 @@
     h1 {
         font-size: 30px;
         margin: 0;
-        letter-spacing: 1px;
-    }
-
-    .subtitle {
-        margin-top: 6px;
-        font-size: 11px;
         letter-spacing: 1px;
     }
 
@@ -100,7 +92,6 @@
 <div class="card">
 
     <h1>Cris & Eli</h1>
-
 
     <div class="timeline-line"></div>
 
